@@ -4,22 +4,23 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-    // Start is called before the first frame update
+
+    Rigidbody2D physics;
+
     void Start()
     {
-        
+        physics = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKey(KeyCode.D))
         {
-            transform.Translate(Vector3.right);
+            physics.velocity = 10 * Vector3.right;
         }
-        else if (Input.GetKeyDown(KeyCode.A))
+        else if (Input.GetKey(KeyCode.A))
         {
-            transform.Translate(Vector3.left) ;
+            physics.velocity = 10 * Vector3.left;
         }
 
     }
