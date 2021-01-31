@@ -5,11 +5,13 @@ using UnityEngine;
 public class PancakeController : MonoBehaviour
 {
     Rigidbody2D physics;
+    GameObject hand;
     GameObject arm;
     bool attached = false;
 
     void Start()
     {
+        hand = GameObject.Find("Hand");
         arm = GameObject.Find("Arm");
         physics = GetComponent<Rigidbody2D>();
     }
@@ -17,30 +19,31 @@ public class PancakeController : MonoBehaviour
     void Update()
     {
 
-        Vector3 outFromArm = arm.transform.position - arm.transform.parent.position;
-        Vector3 handPosition = arm.transform.position + .75f * outFromArm;
 
-        float distToArm = physics.Distance(arm.GetComponent<Collider2D>()).distance;
-        if (Input.GetKey(KeyCode.Space) && distToArm < .5f)
-        {
-            physics.gravityScale = 0;
-            attached = true;
-            transform.position = handPosition;
-            transform.rotation = Quaternion.Euler(new Vector3(0, 0, arm.transform.rotation.eulerAngles.z));
-        }
-        else if (attached && Input.GetKeyUp(KeyCode.Space))
+        float distToHand = physics.Distance(hand.GetComponent<Collider2D>()).distance;
+        if (attached && Input.GetKeyUp(KeyCode.Space))
         {
             physics.gravityScale = 1;
+            transform.SetParent(null);
             attached = false;
 
-            float framerate = 1f / Time.deltaTime;
-
-            Vector3 frameVelocity = framerate * (handPosition - transform.position);
-            float length = frameVelocity.magnitude;
-            Vector3 cappedVelocity = Mathf.Min(length, 40) * frameVelocity.normalized;
-
-            physics.velocity = new Vector2(cappedVelocity.x, cappedVelocity.y);
+        }
+        else if (attached || (Input.GetKey(KeyCode.Space) && distToHand < 1f))
+        {
+            transform.position = hand.transform.position;
+            transform.rotation = arm.transform.rotation;
+            attached = true;
         }
 
+    }
+
+    void OnCollisionEnter2D(Collision2D other) {
+        Debug.Log(other.gameObject.name);
+        
+        if (other.gameObject.name.StartsWith("Bird"))
+        {
+            Vector2 push = other.GetContact(0).normal;
+            other.rigidbody.AddForce(-10000 * push);
+        }
     }
 }

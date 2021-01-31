@@ -4,24 +4,23 @@ using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
-
-    Rigidbody2D physics;
+    float playerSpeed = 10f;
+    CharacterController controller;
 
     void Start()
     {
-        physics = GetComponent<Rigidbody2D>();
+        controller = GetComponent<CharacterController>();
     }
 
     void Update()
     {
         if (Input.GetKey(KeyCode.D))
         {
-            physics.velocity = 10 * Vector3.right;
+            controller.Move(playerSpeed * Time.deltaTime * Vector3.right);
         }
         else if (Input.GetKey(KeyCode.A))
         {
-            physics.velocity = 10 * Vector3.left;
+            controller.Move(playerSpeed * Time.deltaTime * Vector3.left);
         }
-
     }
 }
