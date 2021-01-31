@@ -6,21 +6,7 @@ public class BirdHatch : MonoBehaviour
 {
     public GameObject bird;
 
+    void Start() => InvokeRepeating("Birdfly", 2f, 2f);
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        InvokeRepeating("Birdfly", 2f, 4f);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    void Birdfly()
-    {
-        Instantiate(bird);
-    }
+    void Birdfly() => Instantiate(bird);
 }

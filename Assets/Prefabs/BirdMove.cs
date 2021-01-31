@@ -11,8 +11,7 @@ public class BirdMove : MonoBehaviour
     void Start()
     {
         rb2D = GetComponent<Rigidbody2D>();
-        rb2D.AddForce(transform.right * -115);
-           
+        rb2D.AddForce(Vector3.right * Random.Range(-200, 200));
     }
 
     // Update is called once per frame

@@ -19,14 +19,12 @@ public class PancakeController : MonoBehaviour
     void Update()
     {
 
-
         float distToHand = physics.Distance(hand.GetComponent<Collider2D>()).distance;
         if (attached && Input.GetKeyUp(KeyCode.Space))
         {
             physics.gravityScale = 1;
             transform.SetParent(null);
             attached = false;
-
         }
         else if (attached || (Input.GetKey(KeyCode.Space) && distToHand < 1f))
         {
