@@ -19,7 +19,8 @@ public class Rotating : MonoBehaviour
         //Debug.Log("mouse: " + Input.mousePosition);
         //Debug.Log("this: " + Camera.main.WorldToScreenPoint(transform.parent.position));
         //Debug.Log("diff: " + (angleToMouse - angleToSelf));
-        transform.RotateAround(transform.parent.position, Vector3.forward, (angleToMouse - angleToSelf));
+        
+        transform.RotateAround(transform.parent.position, Vector3.forward, .05f *(angleToMouse - angleToSelf));
 
     }
 

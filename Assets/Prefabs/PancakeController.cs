@@ -44,6 +44,9 @@ public class PancakeController : MonoBehaviour
         if (other.gameObject.name.StartsWith("Bird"))
         {
             Vector2 push = other.GetContact(0).normal;
+            //This pushes the bird outside of the pancake's collision box. This is helpful to make sure we don't have multiple entries into the box before it flies off.
+            other.rigidbody.transform.position -= 3 * new Vector3(push.x, push.y,0);
+            //after that it can just fly off with normal physics
             other.rigidbody.AddForce(-5000 * push);
         }
     }
