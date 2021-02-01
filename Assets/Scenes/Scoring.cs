@@ -18,8 +18,11 @@ public class Scoring : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        
-        Destroy(collision.gameObject);
-        GameManage.Instance.IncScore(1);
+        if (collision.gameObject.name.StartsWith("Bird"))
+        {
+            Destroy(collision.gameObject);
+            GameManage.Instance.IncScore(1);
+        }
+
     }
 }
