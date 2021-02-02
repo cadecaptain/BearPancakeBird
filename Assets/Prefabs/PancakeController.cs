@@ -41,7 +41,7 @@ public class PancakeController : MonoBehaviour
     void OnCollisionEnter2D(Collision2D other) {
         Debug.Log(other.gameObject.name);
         
-        if (other.gameObject.name.StartsWith("Bird"))
+        if (other.gameObject.name.ToLower().StartsWith("bird"))
         {
             Vector2 push = other.GetContact(0).normal;
             //This pushes the bird outside of the pancake's collision box. This is helpful to make sure we don't have multiple entries into the box before it flies off.
