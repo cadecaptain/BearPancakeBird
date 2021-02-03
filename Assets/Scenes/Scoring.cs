@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Scoring : MonoBehaviour
 {
+
+    public GameObject Blood;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,8 +23,18 @@ public class Scoring : MonoBehaviour
     {
         if (collision.gameObject.name.ToLower().StartsWith("bird"))
         {
-            Destroy(collision.gameObject);
-            GameManage.Instance.IncScore(1);
+            bool birdRecentlySlapped = collision.gameObject.GetComponent<BirdController>().slapped;
+            if (birdRecentlySlapped) {
+                GameManage.Instance.IncScore(1);
+
+                GameObject go = Instantiate(Blood);
+                go.transform.position = collision.gameObject.transform.position;
+                go.transform.rotation = this.gameObject.transform.rotation;
+
+
+                Destroy(collision.gameObject);
+                Destroy(go, 10f);
+            }
         }
 
     }

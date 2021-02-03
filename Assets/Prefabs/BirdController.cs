@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BirdMove : MonoBehaviour
+public class BirdController : MonoBehaviour
 
 {
+    public bool slapped { get; private set; } = false; 
     private Rigidbody2D rb2D;
 
     // Start is called before the first frame update
@@ -20,4 +21,9 @@ public class BirdMove : MonoBehaviour
     {
         
     }
+
+    void SetSlapped(bool b) {
+        slapped = b;
+    }
+
 }
