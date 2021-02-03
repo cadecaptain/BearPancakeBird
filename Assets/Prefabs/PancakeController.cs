@@ -59,7 +59,8 @@ public class PancakeController : MonoBehaviour
                 Vector3 deviationFromSpawnerCenter = new Vector3(Random.Range(5f, 10f) * randomSign, 0);// if they hit the spawner's center they can intersect with newly spawned birds
                 Vector3 toNest = GameObject.Find("BirdSpawner").transform.position - other.gameObject.transform.position + deviationFromSpawnerCenter;
                 other.rigidbody.AddForce(100 * toNest);
-            } 
+            }
+            if (this.transform.localScale.y <= 0) { Destroy(this); }
         }
     }
 }
