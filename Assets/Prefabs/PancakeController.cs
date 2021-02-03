@@ -9,12 +9,14 @@ public class PancakeController : MonoBehaviour
     GameObject arm;
     bool attached = false;
     static bool instance_attached = false;//used to communicate that another instance is attached, in which case this one can't be grabbed if it isn't already
+    float healthIncrement;
 
     void Start()
     {
         hand = GameObject.Find("Hand");
         arm = GameObject.Find("Arm");
         physics = GetComponent<Rigidbody2D>();
+        healthIncrement = this.transform.localScale.y / 3f;
     }
 
     void Update()
@@ -24,7 +26,6 @@ public class PancakeController : MonoBehaviour
         if (attached && Input.GetKeyUp(KeyCode.Space))
         {
             physics.gravityScale = 1;
-            transform.SetParent(null);
             attached = false;
             instance_attached = false;
         }
@@ -43,12 +44,22 @@ public class PancakeController : MonoBehaviour
         
         if (other.gameObject.name.ToLower().StartsWith("bird"))
         {
+            this.transform.localScale -= new Vector3(0, healthIncrement, 0);
             other.gameObject.BroadcastMessage("SetSlapped",this.attached);
-            Vector2 push = other.GetContact(0).normal;
-            //This pushes the bird outside of the pancake's collision box. This is helpful to make sure we don't have multiple entries into the box before it flies off.
-            other.rigidbody.transform.position -= 3 * new Vector3(push.x, push.y,0);
-            //after that it can just fly off with normal physics
-            other.rigidbody.AddForce(-5000 * push);
+            if (this.attached)
+            {
+                Vector2 push = other.GetContact(0).normal;
+                //This pushes the bird outside of the pancake's collision box. This is helpful to make sure we don't have multiple entries into the box before it flies off.
+                other.gameObject.transform.position -= 3 * new Vector3(push.x, push.y, 0);
+                //after that it can just fly off with normal physics
+                other.rigidbody.AddForce(-5000 * push);
+            }
+            else {
+                float randomSign = new float [] { -1f, 1f }[Random.Range(0, 2)];
+                Vector3 deviationFromSpawnerCenter = new Vector3(Random.Range(5f, 10f) * randomSign, 0);// if they hit the spawner's center they can intersect with newly spawned birds
+                Vector3 toNest = GameObject.Find("BirdSpawner").transform.position - other.gameObject.transform.position + deviationFromSpawnerCenter;
+                other.rigidbody.AddForce(100 * toNest);
+            } 
         }
     }
 }

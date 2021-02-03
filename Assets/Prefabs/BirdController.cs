@@ -12,7 +12,13 @@ public class BirdController : MonoBehaviour
     void Start()
     {
         rb2D = GetComponent<Rigidbody2D>();
-        rb2D.AddForce(Vector3.right * Random.Range(-200, 200));
+        GameObject[] allPancakes = GameObject.FindGameObjectsWithTag("Pancake");
+        int i = Random.Range(0, allPancakes.Length - 1);
+        GameObject targetPancake = allPancakes[i];
+        Debug.Log("Going after pancake: " +i);
+        Vector3 toTarget = targetPancake.transform.position - this.transform.position;
+        float speed = Random.Range(10f,20f);
+        rb2D.AddForce(toTarget * speed);
         Destroy(gameObject, 15f);
     }
 
@@ -20,6 +26,11 @@ public class BirdController : MonoBehaviour
     void Update()
     {
         
+    }
+
+    void OnBecameInvisible()
+    {
+        Destroy(gameObject);
     }
 
     void SetSlapped(bool b) {
