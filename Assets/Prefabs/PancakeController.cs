@@ -44,7 +44,7 @@ public class PancakeController : MonoBehaviour
         
         if (other.gameObject.name.ToLower().StartsWith("bird"))
         {
-            this.transform.localScale -= new Vector3(0, healthIncrement, 0);
+            this.gameObject.transform.localScale -= new Vector3(0, healthIncrement, 0);
             other.gameObject.BroadcastMessage("SetSlapped",this.attached);
             if (this.attached)
             {
@@ -60,7 +60,7 @@ public class PancakeController : MonoBehaviour
                 Vector3 toNest = GameObject.Find("BirdSpawner").transform.position - other.gameObject.transform.position + deviationFromSpawnerCenter;
                 other.rigidbody.AddForce(100 * toNest);
             }
-            if (this.transform.localScale.y <= 0) { Destroy(this); }
+            if (this.gameObject.transform.lossyScale.y <= 0) { Destroy(this.gameObject); }
         }
     }
 }
