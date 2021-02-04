@@ -32,7 +32,7 @@ public class PancakeController : MonoBehaviour
         else if (attached || (!instance_attached && Input.GetKey(KeyCode.Space) && distToHand < 1f))
         {
             transform.position = hand.transform.position;
-            transform.rotation = arm.transform.rotation;
+            transform.rotation = arm.transform.rotation * Quaternion.Euler(new Vector3(0f, 0f, 50f));
             attached = true;
             instance_attached = true;
         }
@@ -60,7 +60,11 @@ public class PancakeController : MonoBehaviour
                 Vector3 toNest = GameObject.Find("BirdSpawner").transform.position - other.gameObject.transform.position + deviationFromSpawnerCenter;
                 other.rigidbody.AddForce(100 * toNest);
             }
-            if (this.gameObject.transform.lossyScale.y <= 0) { Destroy(this.gameObject); }
+            if (this.gameObject.transform.lossyScale.y <= 0)
+            {
+                instance_attached = false; 
+                Destroy(this.gameObject); 
+            }
         }
     }
 }
